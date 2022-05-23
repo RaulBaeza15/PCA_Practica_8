@@ -16,6 +16,8 @@ class PonBlancoActor (fe: String, out: ActorRef) extends Actor {
     }else{out ! " "}
     contador=contador+1
   }
+  out ! "\n"
+  out ! "\n"
   // para cerrar el fichero
   contenido.close
 
@@ -27,15 +29,27 @@ object PonBlancoActor {
 }
 
 class PonFlechaActor (out: ActorRef) extends Actor{
-  var anterior=""
+  var primero=true
+  var anterior: String = "_"
   def receive = {
 
     case msg =>
-      if(anterior==""){
 
+
+      if(primero){
+        anterior=msg.toString
+        primero=false
+      }else{
+        if(anterior==msg.toString&&anterior=="*"){
+          out ! "^"
+          anterior = ""
+        }else{
+          out ! anterior
+          anterior=msg.toString
+        }
 
       }
-      print(msg)
+
 
   }
 
@@ -45,12 +59,39 @@ object PonFlechaActor {
   def props(out: ActorRef) = Props(new PonFlechaActor(out))
 }
 class PonCambioDeLineaActor (fs: String) extends Actor{
+  var contador = 0
+  var resultado=""
+  var primero=true
   def receive = {
-    case "hi" =>
-      print("Mamasita\n")
+
+
     case msg =>
-      print("Irene\n")
-      context.stop(self)
+      // PrintWriter
+      import java.io._
+
+      val fo = new PrintWriter (new File(fs)) // fs es el nombre del fichero
+
+      // para cerrar el fichero
+
+        if(contador %14!=13){
+          resultado=resultado+msg.toString
+          print(msg)
+
+
+        }else{
+          resultado=resultado+"\n"+msg.toString
+          print("\n"+msg)
+
+
+
+      }
+
+
+      val pw = new PrintWriter(new File(fs ))
+      pw.write(resultado)
+      pw.close
+      contador =contador +1
+
   }
 
 }
