@@ -68,6 +68,9 @@ object PonCambioDeLineaActor {
   def props(fs: String) = Props(new PonCambioDeLineaActor(fs))
 }
 object ExeActors801 extends App {
+
+
+
   val fe = "in.txt"
   val fs = "out"
   val ourSystem = ActorSystem("TransformaCaracteres")
@@ -75,7 +78,9 @@ object ExeActors801 extends App {
   val pFl: ActorRef = ourSystem.actorOf (PonFlechaActor.props (pCL))
   val pBl: ActorRef = ourSystem.actorOf (PonBlancoActor.props (fe, pFl))
   pBl !
-  Thread.sleep (5000)
+    Thread.sleep (5000)
   println ("FIN")
   ourSystem.terminate
+  val r = scala.util.Random
+
 }
