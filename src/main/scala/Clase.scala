@@ -15,6 +15,7 @@ class PonBlancoActor (fe: String, out: ActorRef) extends Actor {
   out ! "\n"
   // para cerrar el fichero
   contenido.close
+
 }
 object PonBlancoActor {
   def props(fe: String, out: ActorRef) = Props(new PonBlancoActor(fe, out))
@@ -81,6 +82,6 @@ object ExeActors801 extends App {
     Thread.sleep (5000)
   println ("FIN")
   ourSystem.terminate
-  val r = scala.util.Random
+
 
 }
